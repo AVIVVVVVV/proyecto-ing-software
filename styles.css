@@ -1,0 +1,171 @@
+/* Importando una fuente limpia similar a la de tu diseño (Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Configuración de la imagen de fondo */
+.login-bg {
+    /* Aquí colocarás la imagen generada */
+    background-image: url('imagenes/fondo_login.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    /* Añade un ligero oscurecimiento al fondo para que la tarjeta blanca resalte más */
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+}
+
+/* Estructura de la tarjeta estilo minimalista */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    border: none;
+    border-radius: 12px;
+    /* Un blanco ligeramente translúcido le da un toque moderno sobre el fondo fotográfico */
+    background-color: rgba(255, 255, 255, 0.96); 
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.login-title {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #000;
+}
+
+/* Tipografía de las etiquetas */
+.custom-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #000;
+}
+
+/* Replicando el estilo exacto de los inputs de tu imagen */
+.custom-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    color: #333;
+    box-shadow: inset 0px 1px 2px rgba(0,0,0,0.02); /* Sombra interna muy sutil */
+    transition: border-color 0.2s ease;
+}
+
+.custom-input:focus {
+    border-color: #007AFF; /* Azul del botón */
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+    outline: none;
+}
+
+.custom-input::placeholder {
+    color: #6c757d;
+    font-weight: 400;
+}
+
+/* Replicando el botón principal azul */
+.custom-btn-primary {
+    background-color: #007AFF; /* Tono azul vibrante de tu diseño */
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: 8px; /* Bordes un poco más redondeados en el botón */
+    padding: 12px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.custom-btn-primary:hover {
+    background-color: #005bb5;
+    color: #fff;
+}
+
+
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+/* --- Reutilizando clases del Login --- */
+.custom-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+}
+
+.custom-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    box-shadow: none;
+    transition: all 0.2s;
+}
+
+.custom-input:focus {
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+    outline: none;
+}
+
+.custom-btn-primary {
+    background-color: #007AFF;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    transition: background-color 0.2s ease;
+}
+
+.custom-btn-primary:hover {
+    background-color: #005bb5;
+    color: #fff;
+}
+
+/* --- Estilos específicos del Módulo de Precios --- */
+
+/* Menú lateral (Sidebar) */
+.custom-sidebar .nav-link {
+    color: #4a4a4a;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 10px 16px;
+    transition: all 0.2s;
+}
+
+.custom-sidebar .nav-link:hover {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.custom-sidebar .nav-link.active {
+    background-color: #343a40; /* Gris oscuro / Negro como en la imagen */
+    color: #fff;
+}
+
+/* Tabla de datos */
+.custom-table {
+    font-size: 0.95rem;
+}
+
+.custom-table thead th {
+    font-weight: 600;
+    color: #4a4a4a;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 12px;
+}
+
+.custom-table tbody td {
+    padding: 16px 12px;
+    vertical-align: middle;
+    color: #1a1a1a;
+    border-bottom: 1px solid #f0f0f0;
+}
