@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Administración del Balneario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="frontend/css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="login-bg">
@@ -40,22 +40,7 @@
         </div>
 
     </main>
-
-    <script>
-    // Este script revisa si la dirección de la página tiene la señal "?error=1"
-    document.addEventListener("DOMContentLoaded", () => {
-        const parametrosURL = new URLSearchParams(window.location.search);
-        if (parametrosURL.get('error') === '1') {
-            // Si hay error, quitamos la clase 'd-none' para que el mensaje rojo se vea
-            document.getElementById('mensajeErrorLogin').classList.remove('d-none');
-            
-            // Opcional: Limpiar la URL para que se vea bonita de nuevo (sin recargar)
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    });
-</script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+

@@ -1,35 +1,52 @@
-/* Importando una fuente limpia similar a la de tu diseño (Inter) */
+/* Estas son las fuentes que se usan */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --blanco-elementos: rgba(255, 255, 255, 0.96);
+  --azul-sistema: #007AFF; 
+}
+
 
 body {
     font-family: 'Inter', sans-serif;
 }
 
-/* Configuración de la imagen de fondo */
+/* 
+***********************************
+Configuración de la imagen de fondo
+*********************************** 
+*/
 .login-bg {
-    /* Aquí colocarás la imagen generada */
-    background-image: url('imagenes/fondo_login.png'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-image: url('../imagenes/fondo_login.png'); 
+    background-size: cover; /* Para escalar la imagen de fondo y hacer que cubra toda el area del contenedor sin estirarla ni distorsionarla */
+    background-position: center; 
+    background-repeat: no-repeat;/* Los navegadores tienden repetir imagenes de fondo para cubrir todo el elemento, esto hace que no */
+    background-attachment: fixed; /* Fija la imagen para evitar que se desplace cuando el usuario hace scroll */
     
     /* Añade un ligero oscurecimiento al fondo para que la tarjeta blanca resalte más */
     background-color: rgba(0, 0, 0, 0.4);
     background-blend-mode: overlay;
 }
 
-/* Estructura de la tarjeta estilo minimalista */
+
+
+
+/* 
+***********************************
+Diseño de la card donde está el login
+*********************************** 
+*/
 .login-card {
     width: 100%;
     max-width: 420px;
     border: none;
     border-radius: 12px;
-    /* Un blanco ligeramente translúcido le da un toque moderno sobre el fondo fotográfico */
-    background-color: rgba(255, 255, 255, 0.96); 
+    background-color: var(--blanco-elementos);
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
+
+
 
 .login-title {
     font-weight: 700;
@@ -37,14 +54,28 @@ body {
     color: #000;
 }
 
-/* Tipografía de las etiquetas */
+
+
+/* 
+***********************************
+La tipografía de las etiquetas
+*********************************** 
+*/
 .custom-label {
     font-weight: 700;
     font-size: 0.9rem;
     color: #000;
 }
 
-/* Replicando el estilo exacto de los inputs de tu imagen */
+
+
+
+
+/* 
+***********************************
+El estilo de los inputs
+*********************************** 
+*/
 .custom-input {
     border: 1px solid #e0e0e0;
     border-radius: 4px;
@@ -56,7 +87,7 @@ body {
 }
 
 .custom-input:focus {
-    border-color: #007AFF; /* Azul del botón */
+    border-color: var(--azul-sistema); /* Azul del botón */
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
     outline: none;
 }
@@ -66,9 +97,16 @@ body {
     font-weight: 400;
 }
 
-/* Replicando el botón principal azul */
+
+
+
+/* 
+***********************************
+El estilo del botón
+*********************************** 
+*/
 .custom-btn-primary {
-    background-color: #007AFF; /* Tono azul vibrante de tu diseño */
+    background-color: var(--azul-sistema); /* Tono azul vibrante de tu diseño */
     color: #fff;
     font-weight: 700;
     font-size: 0.9rem;
@@ -87,6 +125,13 @@ body {
 
 
 
+
+
+/* 
+***********************************
+De precios.html
+*********************************** 
+*/
 body {
     font-family: 'Inter', sans-serif;
     color: #333;
@@ -108,14 +153,16 @@ body {
     transition: all 0.2s;
 }
 
+
+
 .custom-input:focus {
-    border-color: #007AFF;
+    border-color: var(--azul-sistema);
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
     outline: none;
 }
 
 .custom-btn-primary {
-    background-color: #007AFF;
+    background-color: var();
     color: #fff;
     font-weight: 600;
     font-size: 0.9rem;
@@ -130,7 +177,13 @@ body {
     color: #fff;
 }
 
-/* --- Estilos específicos del Módulo de Precios --- */
+
+
+/* 
+***********************************
+Estilos ya especificos del modulo de precios
+*********************************** 
+*/
 
 /* Menú lateral (Sidebar) */
 .custom-sidebar .nav-link {
@@ -147,7 +200,7 @@ body {
 }
 
 .custom-sidebar .nav-link.active {
-    background-color: #343a40; /* Gris oscuro / Negro como en la imagen */
+    background-color: #343a40; 
     color: #fff;
 }
 

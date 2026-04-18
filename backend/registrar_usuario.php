@@ -1,6 +1,6 @@
 <?php
-// 1. Incluimos tu conexión a la base de datos
-require 'conexion.php'; 
+
+require 'config/conexion.php'; //Lo conecta a la base de datos
 
 $mensajeExito = '';
 $mensajeError = '';

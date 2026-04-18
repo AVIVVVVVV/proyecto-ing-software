@@ -2,7 +2,7 @@
 // Aquí sigue el session_start() y tu código...
 // procesar_login.php
 session_start(); // Iniciar la sesión para guardar los datos del usuario
-require 'conexion.php';
+require 'config/conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $identificador = trim($_POST['identificador']); // Puede ser correo o usuario

@@ -1,5 +1,4 @@
 <?php
-// setup.php
 require 'conexion.php';
 
 try {
