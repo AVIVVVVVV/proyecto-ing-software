@@ -1,5 +1,5 @@
 <?php
-require 'conexion.php';
+require 'config/conexion.php';
 
 try {
     // 1. Insertar los roles (si no existen)
@@ -33,4 +33,5 @@ try {
 } catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+
 ?>

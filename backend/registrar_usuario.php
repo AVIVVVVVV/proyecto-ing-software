@@ -147,8 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option selected disabled value="">Rol</option>
                             <option value="Administrador">Administrador</option>
                             <option value="Taquillero">Taquillero</option>
-                            <option value="Cajero">Cajero</option>
-                            <option value="Gerente">Gerente</option>
+                            <option value="Vendedor">Vendedor</option>
+                            <option value="Gerente">Dueño</option>
                         </select>
                     </div>
                 </div>

@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['rol'] = $usuario['nombre_rol'];
 
             // ¡AQUÍ ESTÁ EL CAMBIO! Redirigir a inicio.html
-            header("Location: inicio.html");
+            header("Location: ../inicio.html");
             exit();
 
         } else {
             // Credenciales incorrectas: Redirigir de vuelta al login
-            header("Location: index.html?error=1");
+            header("Location: ../index.html?error=1");
             exit();
         }
 
