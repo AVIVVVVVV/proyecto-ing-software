@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 1. Petición al Backend (Fetch)
 function cargarPreciosDesdeBD() {
     // Le agregamos la hora actual al enlace para engañar a la caché del navegador
-    const urlSinCache = 'obtener_precios.php?t=' + new Date().getTime();
+    const urlSinCache = 'backend/obtener_precios.php?t=' + new Date().getTime();
 
     fetch(urlSinCache, { cache: 'no-store' }) // <--- ESTA LÍNEA ES LA CLAVE
         .then(respuesta => respuesta.json())
@@ -179,7 +179,7 @@ function configurarGuardado() {
         btnGuardar.disabled = true;
 
         // D) Enviar los datos al PHP
-        fetch('guardar_precio.php', {
+        fetch('backend/guardar_precio.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -264,7 +264,7 @@ document.querySelector('[data-bs-target="#precioModal"]').addEventListener('clic
 // Eliminar
 function eliminarPrecio(id, categoria) {
     if (confirm(`¿Estás seguro de eliminar este ítem?`)) {
-        fetch('eliminar_precio.php', {
+        fetch('backend/eliminar_precio.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: id, categoria: categoria })

@@ -1,7 +1,8 @@
 <?php
 // obtener_precios.php
 header('Content-Type: application/json; charset=utf-8');
-require 'conexion.php';
+require 'config/conexion.php';
+
 
 try {
     $items = [];

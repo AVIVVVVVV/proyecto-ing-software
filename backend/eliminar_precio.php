@@ -2,7 +2,7 @@
 // eliminar_precio.php
 session_start();
 header('Content-Type: application/json; charset=utf-8');
-require 'conexion.php';
+require 'config/conexion.php';
 
 $datos = json_decode(file_get_contents('php://input'), true);
 
