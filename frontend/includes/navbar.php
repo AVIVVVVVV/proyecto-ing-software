@@ -10,7 +10,7 @@
                     <?= $rol_usuario_actual ?>: <?= $nombre_usuario_actual ?>
                  </span>
                  <?php if($rol_usuario_actual == 'Administrador' || $rol_usuario_actual == 'Dueño'): ?>
-                    <a href="registrar_usuario.php" class="btn btn-primary btn-sm me-3">Registrar Usuarios</a>
+                    <a href="gestion_usuarios.php" class="btn btn-primary btn-sm me-3">Gestión de Usuarios</a>
                 <?php endif; ?>
                  <div class="rounded-circle bg-secondary" style="width: 40px; height: 40px;"></div>
             </div>
