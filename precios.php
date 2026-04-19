@@ -1,3 +1,7 @@
+<?php
+require 'backend/verificar_sesion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,19 +16,7 @@
 
 <body class="bg-light"> <!-- Es una clase de bootsrap que pone el color blanco de fondo -->
 
-    <header class="bg-white shadow-sm py-3 mb-4">
-        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
-            <div class="d-flex align-items-center">
-                <h4 class="mb-0 fw-bold ms-2">BALNEARIO</h4>
-                <span class="mx-3 text-muted">|</span>
-                <h5 class="mb-0 text-dark">Administración de Precios</h5>
-            </div>
-            <div class="d-flex align-items-center">
-                <span class="me-3 fw-semibold">Administrador</span>
-                <div class="rounded-circle bg-secondary" style="width: 40px; height: 40px;"></div>
-            </div>
-        </div>
-    </header>
+    <?php include 'frontend/includes/navbar.php'; ?>
 
     <main class="container-fluid px-4">
         <div class="row">

@@ -1,12 +1,11 @@
 <?php
-// Aquí sigue el session_start() y tu código...
-// procesar_login.php
+
 session_start(); // Iniciar la sesión para guardar los datos del usuario
 require 'config/conexion.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") { //Verifica que el usuario realmente haya presionado el botón del formulario y no haya llegado a este archivo escribiendo el link en el navegador.
     $identificador = trim($_POST['identificador']); // Puede ser correo o usuario
-    $password = $_POST['password'];
+    $password = $_POST['password']; 
 
     try {
         // Buscar al usuario por correo o nombre de usuario
@@ -16,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     JOIN rol r ON ur.id_rol = r.id_rol
                                     WHERE (u.correo = ? OR u.nombre_usuario = ?) AND u.estado = 1");
         $stmt->execute([$identificador, $identificador]);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC); //Atrapa toda esa fila de información de la base de datos y la convierte en un arreglo de PHP fácil de leer
 
         // Si el usuario existe y la contraseña encriptada coincide
         if ($usuario && password_verify($password, $usuario['contrasena'])) {
@@ -26,12 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['rol'] = $usuario['nombre_rol'];
 
-            // ¡AQUÍ ESTÁ EL CAMBIO! Redirigir a inicio.html
-            header("Location: ../inicio.html");
+            header("Location: ../inicio.php");
             exit();
 
+        // Si las credenciales son incorrectas
         } else {
-            // Credenciales incorrectas: Redirigir de vuelta al login
             header("Location: ../index.html?error=1");
             exit();
         }

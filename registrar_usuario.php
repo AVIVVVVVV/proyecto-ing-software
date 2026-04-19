@@ -1,25 +1,25 @@
 <?php
 
-require 'config/conexion.php'; //Lo conecta a la base de datos
+require 'backend/config/conexion.php'; //Lo conecta a la base de datos
 
 $mensajeExito = '';
 $mensajeError = '';
 
-// Si el formulario fue enviado...
+// Si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Recibimos los datos del formulario
+    // Se reciben los datos del formulario
     $nombre_completo = trim($_POST['nombre']);
     $correo = trim($_POST['correo']);
     $usuario = trim($_POST['usuario']);
     $rol_texto = trim($_POST['rol']); 
 
-    // Dividimos el "Nombre Completo" en Nombre y Apellido Paterno para que encaje en tu tabla
+    // Se divide el nombre completo en nombre y apellido
     $partes_nombre = explode(' ', $nombre_completo, 2);
     $nombre_pila = $partes_nombre[0];
     $apellido_p = isset($partes_nombre[1]) ? $partes_nombre[1] : ''; // Si no puso apellido, se va vacío
 
     // --- MAPEO DE ROLES ---
-    // Asignamos el número de ID correspondiente a cada rol
+    // Se asigna el número de ID correspondiente a cada rol
     $mapa_roles = [
         'Administrador' => 1,
         'Taquillero' => 2,
@@ -36,14 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Iniciamos una TRANSACCIÓN para proteger las dos tablas
         $conexion->beginTransaction();
 
-        // 1. Insertamos en la tabla `usuario`
+        // Insertar en la tabla usuario
         $stmt = $conexion->prepare("INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, nombre_usuario, contrasena, estado) VALUES (?, ?, NULL, ?, ?, ?, 1)");
         $stmt->execute([$nombre_pila, $apellido_p, $correo, $usuario, $password_hash]);
 
         // Sacamos el ID (id_usuario) que MySQL le acaba de asignar a esta persona
         $id_nuevo_usuario = $conexion->lastInsertId();
 
-        // 2. Insertamos la relación en la tabla `usuario_rol`
+        // Insertar la relación en la tabla usuario_rol
         $stmt_rol = $conexion->prepare("INSERT INTO usuario_rol (id_usuario, id_rol) VALUES (?, ?)");
         $stmt_rol->execute([$id_nuevo_usuario, $id_rol]);
 
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option selected disabled value="">Rol</option>
                             <option value="Administrador">Administrador</option>
                             <option value="Taquillero">Taquillero</option>
-                            <option value="Vendedor">Vendedor</option>
+                            <option value="Vendedor">Cajero</option>
                             <option value="Gerente">Dueño</option>
                         </select>
                     </div>
