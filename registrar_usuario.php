@@ -1,6 +1,7 @@
 <?php
 
 require 'backend/config/conexion.php'; //Lo conecta a la base de datos
+require 'backend/verificar_sesion.php';
 
 $mensajeExito = '';
 $mensajeError = '';
@@ -73,38 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
+include 'frontend/includes/header.php';
+
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Usuario - Balneario</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <style>
-        body { background-color: #e2e2e2; min-height: 100vh; } 
-        .navbar-custom { background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .card-custom { border-radius: 12px; }
-        .btn-primary-custom { background-color: #007bff; color: white; border: none; font-weight: 800; border-radius: 8px; }
-        .btn-primary-custom:hover { background-color: #0069d9; color: white; }
-        .btn-secondary-custom { background-color: #dbdbdb; color: #000; border: none; font-weight: 800; border-radius: 8px; }
-        .btn-secondary-custom:hover { background-color: #c4c4c4; }
-        .custom-label { font-weight: 700; font-size: 0.9rem; }
-    </style>
-</head>
-<body>
 
-    <nav class="navbar navbar-custom px-4 py-3">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold fs-4" href="#">Balneario</a>
-            <div class="d-flex align-items-center gap-3">
-                <span class="fw-bold fs-6 d-none d-sm-block">Administrador</span>
-                <div class="rounded-circle" style="width: 45px; height: 45px; background-color: #d1d1d1;"></div>
-            </div>
-        </div>
-    </nav>
 
     <div class="container d-flex justify-content-center" style="margin-top: 50px;">
         <div class="card card-custom shadow border-0 p-5" style="max-width: 650px; width: 100%;">
