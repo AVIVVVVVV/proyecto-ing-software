@@ -1,30 +1,26 @@
 <?php
-// eliminar_precio.php
 session_start();
-header('Content-Type: application/json; charset=utf-8');
-require 'config/conexion.php';
+require 'config/conexion.php'; 
 
-$datos = json_decode(file_get_contents('php://input'), true);
+$datos = json_decode(file_get_contents("php://input"), true);
+$id_real = $datos['id_real'] ?? null;
+$tipo_tabla = $datos['tipo_tabla'] ?? null;
 
-if (!isset($datos['id']) || !isset($datos['categoria'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Faltan datos para eliminar.']);
-    exit;
+if (!$id_real || !$tipo_tabla) {
+    echo json_encode(['status' => 'error', 'message' => 'Faltan datos.']); exit();
 }
 
-$id = intval($datos['id']);
-$categoria = $datos['categoria'];
-
 try {
-    if ($categoria === 'Entradas') {
-        $stmt = $conexion->prepare("DELETE FROM tarifa_entrada WHERE id_tarifa = ?");
+    if ($tipo_tabla === 'entrada') {
+        // En boletos tienes la columna 'activa', usamos borrado lógico
+        $stmt = $conexion->prepare("UPDATE tarifa_entrada SET activa = 0 WHERE id_tarifa = ?");
     } else {
+        // En productos borramos directo
         $stmt = $conexion->prepare("DELETE FROM producto WHERE id_producto = ?");
     }
-    
-    $stmt->execute([$id]);
-    echo json_encode(['status' => 'success', 'message' => 'Eliminado correctamente.']);
-
-} catch (PDOException $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Error al eliminar: ' . $e->getMessage()]);
+    $stmt->execute([$id_real]);
+    echo json_encode(['status' => 'success']);
+} catch(PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Error BD: ' . $e->getMessage()]);
 }
 ?>

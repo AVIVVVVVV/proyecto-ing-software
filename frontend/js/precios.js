@@ -1,281 +1,185 @@
-// Variable global para guardar todos los datos y poder filtrarlos después
-let datosPrecios = [];
+// frontend/js/precios.js
 
-// Cuando la página termine de cargar, ejecutamos las funciones principales
-document.addEventListener('DOMContentLoaded', () => {
-    cargarPreciosDesdeBD();
-    configurarBotonesFiltro(); // ¡NUEVO! Inicializamos los filtros
-    configurarBuscador(); // Inicializamos la barra de busqueda
-    configurarGuardado(); //Inicializar botón de guardar
-});
-
-// 1. Petición al Backend (Fetch)
-function cargarPreciosDesdeBD() {
-    // Le agregamos la hora actual al enlace para engañar a la caché del navegador
-    const urlSinCache = 'backend/obtener_precios.php?t=' + new Date().getTime();
-
-    fetch(urlSinCache, { cache: 'no-store' }) // <--- ESTA LÍNEA ES LA CLAVE
-        .then(respuesta => respuesta.json())
-        .then(resultado => {
-            if (resultado.status === 'success') {
-                datosPrecios = resultado.data;
-
-                // Si teníamos una categoría seleccionada en el menú lateral, respetamos ese filtro
-                const botonActivo = document.querySelector('.custom-sidebar .nav-link.active');
-                if (botonActivo && botonActivo.textContent.trim() !== 'Todos') {
-                    const categoria = botonActivo.textContent.trim();
-                    const filtrados = datosPrecios.filter(item => item.categoria === categoria);
-                    renderizarTabla(filtrados);
-                } else {
-                    renderizarTabla(datosPrecios);
-                }
-            } else {
-                console.error("Error del servidor:", resultado.message);
-                alert("Hubo un problema al cargar los precios.");
-            }
-        })
-        .catch(error => console.error('Error de red:', error));
-}
-
-// 2. Lógica para los botones de la izquierda (Sidebar)
-function configurarBotonesFiltro() {
-    // Seleccionamos todos los botones del menú lateral
-    const botones = document.querySelectorAll('.custom-sidebar .nav-link');
-
-    botones.forEach(boton => {
-        boton.addEventListener('click', (evento) => {
-            // A) Efecto visual: Quitar el color oscuro (active) de todos y ponérselo al que clickeamos
-            botones.forEach(b => b.classList.remove('active'));
-            const botonClickeado = evento.currentTarget;
-            botonClickeado.classList.add('active');
-
-            // B) Obtener el texto del botón (ej. "Alimentos", "Entradas", "Todos")
-            // Usamos textContent y quitamos espacios en blanco de los lados
-            const categoriaSeleccionada = botonClickeado.textContent.trim();
-
-            // C) Filtrar los datos
-            if (categoriaSeleccionada === 'Todos') {
-                // Si es "Todos", pasamos la lista original completa
-                renderizarTabla(datosPrecios);
-            } else {
-                // Si es otra, creamos una nueva lista solo con los que coincidan
-                const datosFiltrados = datosPrecios.filter(item => item.categoria === categoriaSeleccionada);
-                renderizarTabla(datosFiltrados);
-            }
-        });
-    });
-}
-
-// 3. Lógica de la barra de busquedas
-function configurarBuscador() {
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // ==========================================
+    // A. FILTROS (SIDEBAR Y BUSCADOR)
+    // ==========================================
+    const botonesFiltro = document.querySelectorAll('.btn-filtro');
+    const filasArticulos = document.querySelectorAll('.fila-articulo');
     const inputBusqueda = document.getElementById('inputBusqueda');
 
-    // El evento 'input' se dispara cada vez que tecleas o borras una letra
-    inputBusqueda.addEventListener('input', (evento) => {
-        // Convertimos lo que escribe el usuario a minúsculas y le quitamos espacios extra
-        const termino = evento.target.value.toLowerCase().trim();
-
-        // Si el buscador está vacío, mostramos todos los datos de nuevo
-        if (termino === '') {
-            renderizarTabla(datosPrecios);
-
-            // Regresamos la selección visual al botón de "Todos"
-            document.querySelectorAll('.custom-sidebar .nav-link').forEach(b => b.classList.remove('active'));
-            document.querySelector('.custom-sidebar .nav-link').classList.add('active');
-            return;
-        }
-
-        // Filtramos buscando coincidencias en el Nombre o en el ID
-        const resultadosBusqueda = datosPrecios.filter(item => {
-            const coincideNombre = item.nombre.toLowerCase().includes(termino);
-            const coincideID = item.id.toString().includes(termino);
-
-            return coincideNombre || coincideID;
-        });
-
-        // Dibujamos la tabla solo con los que coincidieron
-        renderizarTabla(resultadosBusqueda);
-    });
-}
-
-
-// 4. Dibujar la tabla dinámicamente
-function renderizarTabla(datos) {
-    const tbody = document.getElementById('tablaPreciosBody');
-    tbody.innerHTML = ''; // Limpiar la tabla antes de dibujar los nuevos resultados
-
-    if (datos.length === 0) {
-        const inputBusqueda = document.getElementById('inputBusqueda');
-        const terminoBusqueda = inputBusqueda ? inputBusqueda.value.trim() : '';
-        
-        let mensajeVacio = "No hay elementos en esta categoría.";
-        if(terminoBusqueda !== '') {
-            mensajeVacio = `No se encontraron resultados para "${terminoBusqueda}".`;
-        }
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">${mensajeVacio}</td></tr>`;
-        return;
-    }
-
-    datos.forEach(item => {
-        const precioFormateado = new Intl.NumberFormat('es-MX', {
-            style: 'currency', currency: 'MXN'
-        }).format(item.precio);
-
-        const fechaHoy = new Date().toISOString().split('T')[0];
-
-        // Protección extra por si alguna categoría viene vacía
-        const categoriaSegura = item.categoria ? item.categoria.toString() : 'OTR';
-        const prefijo = categoriaSegura.substring(0, 3).toUpperCase();
-        const idVisual = `${prefijo}-${item.id}`;
-
-        const fila = document.createElement('tr');
-        fila.innerHTML = `
-            <td class="text-muted fw-bold">${idVisual}</td>
-            <td><span class="badge bg-secondary opacity-75">${categoriaSegura}</span></td>
-            <td class="fw-medium">${item.nombre}</td>
-            <td class="fw-bold text-success">${precioFormateado}</td>
-            <td class="text-muted small">${fechaHoy}</td>
-            <td class="text-center">
-                <button class="btn btn-sm text-primary" title="Editar" onclick="abrirEdicion(${item.id}, '${categoriaSegura}')"><i class="bi bi-pencil-fill"></i></button>
-                <button class="btn btn-sm text-danger" title="Eliminar" onclick="eliminarPrecio(${item.id}, '${categoriaSegura}')"><i class="bi bi-trash3-fill"></i></button>
-            </td>
-        `;
-        tbody.appendChild(fila);
-    });
-}
-
-
-// 5. Lógica para guardar un nuevo precio o editar uno existente (Fetch POST)
-function configurarGuardado() {
-    const btnGuardar = document.getElementById('btnGuardarPrecio');
-    const mensajeError = document.getElementById('mensajeModalError');
-
-    btnGuardar.addEventListener('click', () => {
-        // A) Obtener los valores de los inputs
-        const idEdicion = document.getElementById('idItemEdicion').value; // <-- AQUÍ CAPTURAMOS EL ID OCULTO
-        const categoria = document.getElementById('categoriaItem').value;
-        const nombre = document.getElementById('nombreItem').value.trim();
-        const precio = document.getElementById('precioItem').value;
-
-        // Ocultar errores previos
-        mensajeError.classList.add('d-none');
-
-        // B) Validar que no envíen cosas vacías o en ceros
-        if (categoria === '' || nombre === '' || precio === '') {
-            mensajeError.textContent = 'Por favor, completa todos los campos.';
-            mensajeError.classList.remove('d-none');
-            return;
-        }
-
-        if (precio <= 0) {
-            mensajeError.textContent = 'El precio debe ser mayor a $0.00.';
-            mensajeError.classList.remove('d-none');
-            return;
-        }
-
-        // C) Cambiar el botón para que el usuario sepa que está cargando
-        const textoOriginal = btnGuardar.textContent;
-        btnGuardar.textContent = 'GUARDANDO...';
-        btnGuardar.disabled = true;
-
-        // D) Enviar los datos al PHP
-        fetch('backend/guardar_precio.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id: idEdicion,       // <-- AQUÍ SE LO ENVIAMOS A PHP
-                categoria: categoria,
-                nombre: nombre,
-                precio: parseFloat(precio)
-            })
-        })
-            .then(respuesta => respuesta.json())
-            .then(resultado => {
-                if (resultado.status === 'success') {
-                    // Limpiar el formulario y el ID
-                    document.getElementById('idItemEdicion').value = '';
-                    document.getElementById('categoriaItem').value = '';
-                    document.getElementById('nombreItem').value = '';
-                    document.getElementById('precioItem').value = '';
-
-                    // Cerrar el modal usando la lógica de Bootstrap
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('precioModal'));
-                    modal.hide();
-
-                    // ¡Recargar la tabla para ver los cambios al instante!
-                    cargarPreciosDesdeBD();
+    botonesFiltro.forEach(boton => {
+        boton.addEventListener('click', function() {
+            const filtro = this.getAttribute('data-filtro');
+            document.querySelectorAll('.fila-articulo').forEach(fila => {
+                if (filtro === 'Todos' || fila.getAttribute('data-categoria') === filtro) {
+                    fila.style.display = ''; 
                 } else {
-                    // Mostrar error del servidor en el modal
-                    mensajeError.textContent = resultado.message;
-                    mensajeError.classList.remove('d-none');
+                    fila.style.display = 'none'; 
                 }
-            })
-            .catch(error => {
-                mensajeError.textContent = 'Error de conexión con el servidor.';
-                mensajeError.classList.remove('d-none');
-            })
-            .finally(() => {
-                // Devolver el botón a la normalidad
-                btnGuardar.textContent = textoOriginal;
-                btnGuardar.disabled = false;
             });
+        });
     });
-}
 
-
-// Abrir modal para Editar
-function abrirEdicion(id, categoria) {
-    // El "chismoso": Imprimirá en la consola qué botón tocaste
-    console.log("Clic en Editar -> ID:", id, "| Categoría:", categoria);
-
-    // Usamos == (doble igual) en vez de === para evitar problemas de Texto vs Número
-    const item = datosPrecios.find(p => p.id == id && p.categoria === categoria);
-    
-    if (item) {
-        console.log("¡Ítem encontrado en la memoria!", item); // Confirmación
-        
-        // Llenamos el formulario oculto
-        document.getElementById('idItemEdicion').value = item.id;
-        document.getElementById('categoriaItem').value = item.categoria;
-        document.getElementById('nombreItem').value = item.nombre;
-        document.getElementById('precioItem').value = item.precio;
-        document.getElementById('precioModalLabel').textContent = 'EDITAR PRECIO';
-        
-        // Abrimos el modal
-        const modalElement = document.getElementById('precioModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-        modalInstance.show();
-    } else {
-        console.error("Error: No se encontró el ítem en la lista de datosPrecios.");
-        alert("Hubo un problema al intentar editar este ítem. Revisa la consola (F12).");
+    if(inputBusqueda) {
+        inputBusqueda.addEventListener('keyup', function() {
+            const texto = this.value.toLowerCase();
+            document.querySelectorAll('.fila-articulo').forEach(fila => {
+                const contenidoFila = fila.textContent.toLowerCase();
+                fila.style.display = contenidoFila.includes(texto) ? '' : 'none';
+            });
+        });
     }
-}
 
+    // ==========================================
+    // B. LIMPIAR MODAL AL AGREGAR NUEVO
+    // ==========================================
+    const btnAgregar = document.querySelector('button[data-bs-target="#modalEditarPrecio"]');
+    if (btnAgregar) {
+        btnAgregar.addEventListener('click', () => {
+            document.getElementById('formEditarPrecio').reset();
+            document.getElementById('edit_id_precio').value = '';
+            document.getElementById('edit_id_ui').value = '';
+            const inputTipoTabla = document.getElementById('edit_tipo_tabla');
+            if(inputTipoTabla) inputTipoTabla.value = '';
+            document.querySelector('#modalEditarPrecio .modal-title').textContent = 'Nuevo Precio';
+        });
+    }
 
-// Limpiar modal si presionamos "Nuevo Precio" (Añade id="btnNuevoPrecio" a este botón en tu HTML)
-document.querySelector('[data-bs-target="#precioModal"]').addEventListener('click', () => {
-    document.getElementById('idItemEdicion').value = '';
-    document.getElementById('precioModalLabel').textContent = 'NUEVO PRECIO';
-    document.getElementById('categoriaItem').value = '';
-    document.getElementById('nombreItem').value = '';
-    document.getElementById('precioItem').value = '';
-});
-
-// Eliminar
-function eliminarPrecio(id, categoria) {
-    if (confirm(`¿Estás seguro de eliminar este ítem?`)) {
-        fetch('backend/eliminar_precio.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id, categoria: categoria })
-        })
+    // ==========================================
+    // C. GUARDAR CAMBIOS (SIN RECARGAR PÁGINA)
+    // ==========================================
+    const formEditarPrecio = document.getElementById('formEditarPrecio');
+    if(formEditarPrecio) { 
+        formEditarPrecio.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const datosFormulario = new FormData(this);
+            
+            fetch('backend/guardar_precio.php', {
+                method: 'POST',
+                body: datosFormulario
+            })
             .then(res => res.json())
             .then(resultado => {
-                if (resultado.status === 'success') {
-                    cargarPreciosDesdeBD(); // Recargar tabla
+                if(resultado.status === 'success') {
+                    const data = resultado.data;
+                    
+                    // 1. Armamos el código HTML de la fila "al vuelo"
+                    const rowHTML = `
+                        <td class="fw-bold text-muted">${data.id_ui}</td>
+                        <td><span class="badge bg-secondary rounded-pill px-3 py-1">${data.categoria}</span></td>
+                        <td class="text-dark fw-semibold">${data.nombre}</td>
+                        <td class="text-success fw-bold">$${data.precio}</td>
+                        <td class="text-end px-4">
+                            <a href="#" class="text-primary me-3 text-decoration-none" title="Editar" 
+                               onclick="abrirModalEditarPrecio('${data.id_real}', '${data.tipo_tabla}', '${data.id_ui}', '${data.nombre.replace(/'/g, "\\'")}', '${data.categoria}', ${data.precio})">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a href="#" class="text-danger text-decoration-none" title="Eliminar" 
+                               onclick="eliminarPrecio('${data.id_real}', '${data.tipo_tabla}', '${data.id_ui}')">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                    `;
+
+                    // 2. ¿Editamos o Creamos?
+                    if (resultado.accion === 'editar') {
+                        // Buscamos la fila vieja usando el ID oculto y le metemos el nuevo HTML
+                        const oldIdUi = document.getElementById('edit_id_ui').value;
+                        const fila = document.getElementById('fila-precio-' + oldIdUi);
+                        if (fila) {
+                            fila.id = 'fila-precio-' + data.id_ui; // Por si cambió de categoría
+                            fila.setAttribute('data-categoria', data.categoria);
+                            fila.innerHTML = rowHTML;
+                        }
+                    } else {
+                        // Es NUEVO: Creamos una etiqueta <tr>, le metemos el HTML, y la agregamos a la tabla
+                        const tbody = document.querySelector('.custom-table tbody');
+                        
+                        // Quitamos el mensaje de "No hay precios" si estaba
+                        const rowNoData = tbody.querySelector('td[colspan]');
+                        if (rowNoData) rowNoData.parentElement.remove(); 
+
+                        const nuevaFila = document.createElement('tr');
+                        nuevaFila.id = 'fila-precio-' + data.id_ui;
+                        nuevaFila.className = 'fila-articulo';
+                        nuevaFila.setAttribute('data-categoria', data.categoria);
+                        nuevaFila.innerHTML = rowHTML;
+                        tbody.appendChild(nuevaFila);
+                    }
+
+                    // 3. Cerramos Modal y Alerta Toast (Sin recargar location.reload)
+                    bootstrap.Modal.getInstance(document.getElementById('modalEditarPrecio')).hide();
+                    Swal.fire({
+                        toast: true, position: 'top-end', icon: 'success', 
+                        title: resultado.accion === 'editar' ? 'Actualizado' : 'Creado', 
+                        showConfirmButton: false, timer: 1500
+                    });
+                    
                 } else {
-                    alert(resultado.message);
+                    Swal.fire('Error', resultado.message, 'error');
                 }
-            });
+            }).catch(err => console.error("Error:", err));
+        });
     }
+});
+
+// ==========================================
+// D. FUNCIONES GLOBALES 
+// ==========================================
+function abrirModalEditarPrecio(idReal, tipoTabla, idUi, nombre, categoria, precio) {
+    document.getElementById('edit_id_precio').value = idReal;
+    document.getElementById('edit_id_ui').value = idUi; // Guardamos el ID visual
+    document.getElementById('edit_nombre_precio').value = nombre;
+    document.getElementById('edit_valor_precio').value = precio;
+    
+    let inputTipoTabla = document.getElementById('edit_tipo_tabla');
+    if(!inputTipoTabla) {
+        inputTipoTabla = document.createElement('input');
+        inputTipoTabla.type = 'hidden';
+        inputTipoTabla.id = 'edit_tipo_tabla';
+        inputTipoTabla.name = 'tipo_tabla';
+        document.getElementById('formEditarPrecio').appendChild(inputTipoTabla);
+    }
+    inputTipoTabla.value = tipoTabla;
+    
+    const selectCat = document.getElementById('edit_categoria_precio');
+    for(let i=0; i < selectCat.options.length; i++) {
+        if(selectCat.options[i].value === categoria) {
+            selectCat.selectedIndex = i; break;
+        }
+    }
+    
+    document.querySelector('#modalEditarPrecio .modal-title').textContent = 'Editar Precio';
+    new bootstrap.Modal(document.getElementById('modalEditarPrecio')).show();
+}
+
+function eliminarPrecio(idReal, tipoTabla, idUI) {
+    Swal.fire({
+        title: '¿Eliminar este artículo?',
+        text: "No podrás revertir esto.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('backend/eliminar_precio.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_real: idReal, tipo_tabla: tipoTabla })
+            })
+            .then(res => res.json())
+            .then(resultado => {
+                if(resultado.status === 'success') {
+                    const fila = document.getElementById('fila-precio-' + idUI);
+                    if(fila) fila.remove();
+                    Swal.fire('¡Eliminado!', 'El registro fue borrado.', 'success');
+                } else {
+                    Swal.fire('Error', resultado.message, 'error');
+                }
+            }).catch(error => console.error("Error:", error));
+        }
+    })
 }
