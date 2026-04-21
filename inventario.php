@@ -68,9 +68,11 @@ include 'frontend/includes/header.php';
                                             </td>
                                             
                                             <td class="text-end px-4">
-                                                <button class="btn btn-sm btn-primary fw-bold shadow-sm" title="Dar de alta mercancía" 
-                                                   onclick="abrirModalEntrada(<?= $item['id_producto'] ?>, '<?= htmlspecialchars($item['nombre_producto'], ENT_QUOTES) ?>')">
-                                                    <i class="bi bi-box-arrow-in-down me-1"></i> ENTRADA
+                                                <button type="button" class="btn btn-sm btn-primary fw-bold shadow-sm btn-abrir-entrada" 
+                                                    title="Dar de alta mercancía" 
+                                                    data-id="<?= $item['id_producto'] ?>" 
+                                                    data-nombre="<?= htmlspecialchars($item['nombre_producto'], ENT_QUOTES) ?>">
+                                                        <i class="bi bi-box-arrow-in-down me-1"></i> ENTRADA
                                                 </button>
                                             </td>
                                         </tr>
@@ -137,5 +139,55 @@ include 'frontend/includes/header.php';
     </div>
 </div>
 
+
+<div class="modal fade" id="modalEntrada" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light border-0">
+                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-box-arrow-in-down text-primary me-2"></i>Registrar Entrada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                <form id="formEntradaMercancia">
+                    <input type="hidden" id="entrada_id_producto" name="id_producto">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark small">PRODUCTO</label>
+                        <input type="text" id="entrada_nombre_producto" class="form-control bg-light" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark small">PROVEEDOR (Opcional)</label>
+                        <select name="id_proveedor" class="form-select custom-input">
+                            <option value="">-- Sin proveedor específico --</option>
+                            <?php foreach($proveedores as $prov): ?>
+                                <option value="<?= $prov['id_proveedor'] ?>"><?= htmlspecialchars($prov['nombre_empresa']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold text-dark small">CANTIDAD A INGRESAR</label>
+                            <input type="number" name="cantidad" class="form-control custom-input form-control-lg text-center fw-bold" min="1" value="1" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold text-dark small">CONCEPTO</label>
+                            <input type="text" name="concepto" class="form-control custom-input form-control-lg" placeholder="Ej: Compra semanal" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end border-top pt-3">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">GUARDAR ENTRADA</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include 'frontend/includes/footer.php'; ?>
-<script src="frontend/js/inventario.js?v=1"></script>
+<script src="frontend/js/inventario.js?v=4"></script>
+
