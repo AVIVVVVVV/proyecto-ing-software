@@ -1,19 +1,19 @@
 <?php
-// 1. SEGURIDAD Y BASE DE DATOS
+//SEGURIDAD Y BASE DE DATOS
 require 'backend/verificar_sesion.php';
 require 'backend/config/conexion.php'; 
 
 $lista_precios = [];
 
 try {
-    // A) Extraemos los Boletos (De la tabla tarifa_entrada)
+     //Extraemos los Boletos (De la tabla tarifa_entrada)
     $stmtEntradas = $conexion->query("SELECT id_tarifa, nombre_tarifa, precio_actual FROM tarifa_entrada WHERE activa = 1");
     $entradas = $stmtEntradas->fetchAll(PDO::FETCH_ASSOC);
 
     foreach($entradas as $ent) {
         $lista_precios[] = [
             'id_real' => $ent['id_tarifa'],
-            'id_ui' => 'ENT-' . $ent['id_tarifa'], // Generamos el código visual (Ej. ENT-1)
+            'id_ui' => 'ENT-' . $ent['id_tarifa'], // Generamos el código visual 
             'tipo_tabla' => 'entrada',             // Etiqueta secreta para que el Backend sepa qué tabla actualizar
             'categoria' => 'Entradas',
             'nombre' => $ent['nombre_tarifa'],
@@ -21,7 +21,7 @@ try {
         ];
     }
 
-    // B) Extraemos los Productos (De la tabla producto)
+    // Extraemos los Productos (De la tabla producto)
     $stmtProductos = $conexion->query("SELECT id_producto, nombre_producto, descripcion, precio_venta FROM producto");
     $productos = $stmtProductos->fetchAll(PDO::FETCH_ASSOC);
 
@@ -44,7 +44,7 @@ try {
     die("Error al cargar los datos: " . $e->getMessage());
 }
 
-// 2. CABECERA
+$titulo_pagina = "Administración de Precios";
 include 'frontend/includes/header.php';
 ?>  
     

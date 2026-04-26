@@ -3,7 +3,7 @@
             <div class="d-flex align-items-center">
                 <a class="mb-0 fw-bold ms-2 text-dark text-decoration-none" href="inicio.php">BALNEARIO</a>
                 <span class="mx-3 text-muted">|</span>
-                <h5 class="mb-0 text-dark">Administración de Precios</h5>
+                <?= $titulo_pagina ?? 'Panel de Control' ?>
             </div>
             <div class="d-flex align-items-center">
                 <span class="fw-bold fs-6 d-none d-sm-block text-capitalize me-3">

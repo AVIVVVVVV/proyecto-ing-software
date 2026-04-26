@@ -16,7 +16,7 @@ try {
     die("Error al cargar inventario: " . $e->getMessage());
 }
 
-// 2. CABECERA
+$titulo_pagina = "Gestión de Inventario";
 include 'frontend/includes/header.php';
 ?>
 
