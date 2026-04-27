@@ -90,7 +90,7 @@ include 'frontend/includes/header.php';
     </div>
 </main>
 
-<div class="modal fade" id="modalNuevoProducto" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalNuevoProducto" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-light border-0">
@@ -156,17 +156,22 @@ include 'frontend/includes/header.php';
                         <label class="form-label fw-bold text-dark small">PRODUCTO</label>
                         <input type="text" id="entrada_nombre_producto" class="form-control bg-light" readonly>
                     </div>
-
+ 
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark small">PROVEEDOR (Opcional)</label>
-                        <select name="id_proveedor" class="form-select custom-input">
-                            <option value="">-- Sin proveedor específico --</option>
-                            <?php foreach($proveedores as $prov): ?>
-                                <option value="<?= $prov['id_proveedor'] ?>"><?= htmlspecialchars($prov['nombre_empresa']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label class="form-label fw-bold text-dark small">PROVEEDOR</label>
+                        <div class="d-flex gap-2">
+                            <select name="id_proveedor" id="selectProveedor" class="form-select custom-input" required>
+                                <option value="">-- Selecciona un proveedor --</option>
+                                <?php foreach($proveedores as $prov): ?>
+                                    <option value="<?= $prov['id_proveedor'] ?>"><?= htmlspecialchars($prov['nombre_empresa']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                             <button type="button" class="btn btn-outline-primary" onclick="agregarProveedorRapido()" title="Nuevo Proveedor">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
                     </div>
-                    
+ 
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label class="form-label fw-bold text-dark small">CANTIDAD A INGRESAR</label>

@@ -17,6 +17,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    
+    //Validación para evitar duplicados
+    $stmtCheck = $conexion->prepare("SELECT COUNT(*) FROM producto WHERE nombre_producto = ?");
+    $stmtCheck->execute([$nombre]);
+    if ($stmtCheck->fetchColumn() > 0) {
+        echo json_encode(['status' => 'error', 'message' => 'Ya existe un producto registrado con ese nombre exacto.']);
+        exit();
+    }
+
     try {
         // Insertamos el producto. Nota que NO enviamos stock_actual, 
         // la BD le pondrá 0 por defecto como lo configuraste en phpMyAdmin.

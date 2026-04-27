@@ -44,7 +44,7 @@ try {
     die("Error al cargar los datos: " . $e->getMessage());
 }
 
-// 2. CABECERA
+
 include 'frontend/includes/header.php';
 ?>  
     
@@ -60,6 +60,7 @@ include 'frontend/includes/header.php';
                             <button class="nav-link text-start mb-1 btn-filtro" data-filtro="Alimentos" data-bs-toggle="pill" type="button"><i class="bi bi-cup-hot me-2"></i> Alimentos</button>
                             <button class="nav-link text-start mb-1 btn-filtro" data-filtro="Bebidas" data-bs-toggle="pill" type="button"><i class="bi bi-cup-straw me-2"></i> Bebidas</button>
                             <button class="nav-link text-start btn-filtro" data-filtro="Servicios" data-bs-toggle="pill" type="button"><i class="bi bi-tools me-2"></i> Servicios</button>
+                            <button class="nav-link text-start btn-filtro" data-filtro="Articulos" data-bs-toggle="pill" type="button"><i class="bi bi-tools me-2"></i> Arituculos</button>
                         </div>
                     </div>
                 </div>
@@ -157,6 +158,7 @@ include 'frontend/includes/header.php';
                                 <option value="Alimentos">Alimentos</option>
                                 <option value="Bebidas">Bebidas</option>
                                 <option value="Servicios">Servicios</option>
+                                <option value="Articulos">Articulos</option>
                             </select>
                         </div>
                         

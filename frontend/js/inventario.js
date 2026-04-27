@@ -103,3 +103,45 @@ function abrirModalEntrada(idProducto, nombreProducto) {
     document.getElementById('entrada_nombre_producto').value = nombreProducto;
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
+
+
+// AGREGAR PROVEEDOR AL VUELO
+function agregarProveedorRapido() {
+    Swal.fire({
+        title: 'Nuevo Proveedor',
+        input: 'text',
+        inputLabel: 'Nombre de la Empresa',
+        inputPlaceholder: 'Ej. Coca-Cola, Sabritas...',
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar',
+        target: document.getElementById('modalEntrada'),
+        inputValidator: (value) => {
+            if (!value) return '¡Necesitas escribir un nombre!'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Mandamos el nombre a PHP
+            const formData = new FormData();
+            formData.append('nombre_empresa', result.value);
+
+            fetch('backend/crear_proveedor.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    // Agregamos el nuevo proveedor al Select y lo dejamos seleccionado
+                    const select = document.getElementById('selectProveedor');
+                    const nuevaOpcion = new Option(data.nombre, data.id, true, true);
+                    select.add(nuevaOpcion);
+                    
+                    Swal.fire({toast: true, position: 'top-end', icon: 'success', title: 'Proveedor agregado', showConfirmButton: false, timer: 1500});
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            });
+        }
+    });
+}
