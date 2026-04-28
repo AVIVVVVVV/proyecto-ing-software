@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. VARIABLES GLOBALES DEL CARRITO
+    //VARIABLES GLOBALES DEL CARRITO
     const carrito = {}; 
     const listaCarrito = document.getElementById('lista-carrito');
     const totalCobrarEl = document.getElementById('total-cobrar');
 
-    // 2. CONTROLES DE + Y -
+    // CONTROLES DE + Y -
     document.querySelectorAll('.btn-sumar, .btn-restar').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
@@ -32,14 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. BOTÓN CANCELAR VENTA
+   // BOTÓN CANCELAR VENTA
     document.getElementById('btn-cancelar-venta').addEventListener('click', () => {
         document.querySelectorAll('.input-cantidad').forEach(input => input.value = 0);
         for(let key in carrito) delete carrito[key];
         renderizarCarrito();
     });
 
-    // 4. FUNCIÓN PARA DIBUJAR LA TABLA
+    // FUNCIÓN PARA DIBUJAR LA TABLA
     function renderizarCarrito() {
         listaCarrito.innerHTML = '';
         let total = 0;
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         totalCobrarEl.textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     }
 
-    // 5. BOTÓN CONFIRMAR VENTA (EL QUE FALLABA)
+    // BOTÓN CONFIRMAR VENTA 
     document.getElementById('btn-confirmar-venta').addEventListener('click', () => {
         const itemsVenta = [];
         for (let id in carrito) {
@@ -119,4 +119,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-}); // <-- ESTA ES LA LLAVE QUE SE SUELE PERDER (Cierra el DOMContentLoaded)
+}); 
