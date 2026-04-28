@@ -129,7 +129,24 @@ include 'frontend/includes/header.php';
         </div>
         <?php endif; ?>
 
+        
+        <?php if(in_array($rol_usuario, ['Administrador', 'Dueño', 'Vendedor'])): ?>
+        <div class="col">
+            <a href="gestion_proveedores.php" class="card bg-white shadow-sm h-100 modulo-card">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-container bg-secondary bg-opacity-10 text-secondary mx-auto mb-3">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark">Proveedores</h4>
+                    <p class="text-muted mb-0 small">Directorio de empresas, contactos y teléfonos.</p>
+                </div>
+            </a>
+        </div>
+        <?php endif; ?>
+
+
     </div>
+
 </main>
 
 <?php include 'frontend/includes/footer.php'; ?>
