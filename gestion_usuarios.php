@@ -173,5 +173,5 @@ include 'frontend/includes/header.php';
   </div>
 </div>
 
-
+<script src="frontend/js/usuarios.js"></script>
 <?php include 'frontend/includes/footer.php'; ?>
