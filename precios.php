@@ -44,6 +44,7 @@ try {
     die("Error al cargar los datos: " . $e->getMessage());
 }
 
+$titulo_pagina = "Administración de precios";
 
 include 'frontend/includes/header.php';
 ?>  
