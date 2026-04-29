@@ -60,7 +60,7 @@ include 'frontend/includes/header.php';
                             <button class="nav-link text-start mb-1 btn-filtro" data-filtro="Alimentos" data-bs-toggle="pill" type="button"><i class="bi bi-cup-hot me-2"></i> Alimentos</button>
                             <button class="nav-link text-start mb-1 btn-filtro" data-filtro="Bebidas" data-bs-toggle="pill" type="button"><i class="bi bi-cup-straw me-2"></i> Bebidas</button>
                             <button class="nav-link text-start btn-filtro" data-filtro="Servicios" data-bs-toggle="pill" type="button"><i class="bi bi-tools me-2"></i> Servicios</button>
-                            <button class="nav-link text-start btn-filtro" data-filtro="Articulos" data-bs-toggle="pill" type="button"><i class="bi bi-tools me-2"></i> Arituculos</button>
+                            <button class="nav-link text-start btn-filtro" data-filtro="Articulos" data-bs-toggle="pill" type="button"><i class="bi bi-tools me-2"></i> Articulos</button>
                         </div>
                     </div>
                 </div>
